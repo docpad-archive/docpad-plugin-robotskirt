@@ -1,16 +1,16 @@
-# Requires
-rs = require 'robotskirt'
-
 # Export Plugin
 module.exports = (BasePlugin) ->
-	# Define Plugin
-	class SundownPlugin extends BasePlugin
-		# Plugin name
-		name: 'sundown'
+	# Prepare
+	rs = null
 
-		# Plugin configuration
+	# Define
+	class RobotskirtPlugin extends BasePlugin
+		# Name
+		name: 'robotskirt'
+
+		# Configuration
 		config:
-			sundownOptions:
+			robotskirtOptions:
 				EXT_AUTOLINK: true
 				EXT_FENCED_CODE: true
 				EXT_LAX_SPACING: true
@@ -31,60 +31,62 @@ module.exports = (BasePlugin) ->
 				HTML_ESCAPE: false
 			smartypants: true
 			highlight: false
+			inline: false
 
-		# sigleton parser
-		_parser: null
+		# Singleton Parser
+		parser: null
 
 		# Render some content
 		render: (opts,next) ->
 			# Prepare
 			config = @config
-			parser = @_parser
 			{inExtension,outExtension} = opts
 
 			# Check our extensions
 			if inExtension in ['md','markdown'] and outExtension in [null,'html']
-				if !parser
+				rs = require('robotskirt')  unless rs?
+
+				# Create Parser
+				unless @parser?
 					renderer = new rs.HtmlRenderer()
+
 					# highlight
-					renderer.blockcode= config.highlight if config.highlight
+					renderer.blockcode = config.highlight  if config.highlight
 
-					# user inline
+					# inline
 					if config.inline
-						renderer.normal_text= (src) ->
+						renderer.normal_text = (src) ->
 							blocks = []
-							hash= (text)->
+							hash = (text) ->
 								text = text.replace(/(^\n+|\n+$)/g,"")
-								"\n\n~K" + (blocks.push(text)-1) + "K\n\n"
-
-							unhash= (src)->
-								src.replace /\n\n~K([0-9]+)K\n\n/g, (whole, m1)->
+								return "\n\n~K" + (blocks.push(text)-1) + "K\n\n"
+							unhash = (src) ->
+								src.replace /\n\n~K([0-9]+)K\n\n/g, (whole,m1) ->
 									blocks[m1]
 
 							out = config.inline(src, hash)
-							out = unhash( out ) if blocks.length > 0 
+							out = unhash(out)  if blocks.length > 0
 							out
 
-					# make options for robotscript
-					opts = config.sundownOptions
+					# robotskirt options
+					opts = config.robotskirtOptions
 					for name of opts
 						if opts[name]
-							if name.indexOf('EXT_') == 0
-								extOpts = extOpts || []
-								extOpts.push( rs[ name ] )
-							if name.indexOf('HTML_') == 0
-								htmlOpts = htmlOpts || []
-								htmlOpts.push( rs[ name ] )
+							if name.indexOf('EXT_') is 0
+								extOpts = extOpts or []
+								extOpts.push(rs[name])
+							if name.indexOf('HTML_') is 0
+								htmlOpts = htmlOpts or []
+								htmlOpts.push(rs[name])
 
-					@_parser = parser = new rs.Markdown(renderer, extOpts, htmlOpts);
-				# end parser construction 
+					# create
+					@parser = new rs.Markdown(renderer, extOpts, htmlOpts);
 
 				# Render
-				opts.content = parser.render(opts.content)
+				opts.content = @parser.render(opts.content)
 
-				#SmartyPants
-				if config.smartypants
-					opts.content = rs.smartypantsHtml(opts.content) 
+				# SmartyPants
+				opts.content = rs.smartypantsHtml(opts.content)  if config.smartypants
 
 			# Done
 			next()
