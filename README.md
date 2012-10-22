@@ -1,4 +1,4 @@
-# Marked Plugin for DocPad
+# Robotskirt Plugin for DocPad
 [Markdown](http://daringfireball.net/projects/markdown/) rendering for [DocPad](https://docpad.org), using [Robotskirt](https://github.com/benmills/robotskirt)
 
 Convention:	`.html.md|markdown`
@@ -17,7 +17,7 @@ For information on customising your plugin configuration you can refer to the [D
 You can customise the [Robotskirt](https://github.com/benmills/robotskirt) options using the `robotskirtOptions` object. By default we use:
 
 ``` coffee
-plugins
+plugins:
 	robotskirt:
 		robotskirtOptions:
 			EXT_AUTOLINK: true
@@ -72,18 +72,20 @@ plugins:
 You can add your markup in only normal text blocks. Next example is Twitter tag exmaple. `@pismute` will be rendered `<a href="https://twitter.com/pismute">@pismute</a>`:
 
 ``` coffee
-inline: (src, hash)->
-	out = src
+plugins:
+	robotskirt:
+		inline: (src, hash)->
+			out = src
 
-	#for people
-	out = out.replace /(^|[ \t]+)@([a-zA-Z0-9]+)/g, (whole, m1, m2) ->
-		hash m1 + '<a href="https://twitter.com/' + m2 + '">@' + m2 + '</a>'
+			#for people
+			out = out.replace /(^|[ \t]+)@([a-zA-Z0-9]+)/g, (whole, m1, m2) ->
+			hash m1 + '<a href="https://twitter.com/' + m2 + '">@' + m2 + '</a>'
 
-	#for hash tag·
-	out = out.replace /(^|[ \t]+)#([ㄱ-ㅎ가-힣a-zA-Z0-9]+)/g, (whole, m1, m2) ->
-		hash m1 + '<a href="https://twitter.com/search?q=%23' + escapeURL(m2) + '&src=hash">#' + m2 + '</a>'
+			#for hash tag·
+			out = out.replace /(^|[ \t]+)#([ㄱ-ㅎ가-힣a-zA-Z0-9]+)/g, (whole, m1, m2) ->
+			hash m1 + '<a href="https://twitter.com/search?q=%23' + escapeURL(m2) + '&src=hash">#' + m2 + '</a>'
 
-	return out
+			return out
 ```
 
 ## History
