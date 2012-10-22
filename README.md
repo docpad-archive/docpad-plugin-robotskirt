@@ -79,11 +79,11 @@ plugins:
 
 			#for people
 			out = out.replace /(^|[ \t]+)@([a-zA-Z0-9]+)/g, (whole, m1, m2) ->
-			hash m1 + '<a href="https://twitter.com/' + m2 + '">@' + m2 + '</a>'
+				hash m1 + '<a href="https://twitter.com/' + m2 + '">@' + m2 + '</a>'
 
 			#for hash tag·
 			out = out.replace /(^|[ \t]+)#([ㄱ-ㅎ가-힣a-zA-Z0-9]+)/g, (whole, m1, m2) ->
-			hash m1 + '<a href="https://twitter.com/search?q=%23' + escapeURL(m2) + '&src=hash">#' + m2 + '</a>'
+				hash m1 + '<a href="https://twitter.com/search?q=%23' + escapeURL(m2) + '&src=hash">#' + m2 + '</a>'
 
 			return out
 ```
