@@ -1,6 +1,6 @@
 {
 	"name": "docpad-plugin-robotskirt",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Markdown rendering for DocPad, using Robotskirt (sundown)",
 	"homepage": "http://docpad.org/plugin/robotskirt",
 	"keywords": [

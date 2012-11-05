@@ -1,7 +1,7 @@
 # Export Plugin
 module.exports = (BasePlugin) ->
-	# Prepare
-	rs = null
+	# Requires
+	rs = require('robotskirt')
 
 	# Define
 	class RobotskirtPlugin extends BasePlugin
@@ -36,6 +36,50 @@ module.exports = (BasePlugin) ->
 		# Singleton Parser
 		parser: null
 
+		# Constructor
+		constructor: ->
+			# Prepare
+			super
+			config = @config
+
+			# Create Parser
+			renderer = new rs.HtmlRenderer()
+
+			# highlight
+			renderer.blockcode = config.highlight  if config.highlight
+
+			# inline
+			if config.inline
+				renderer.normal_text = (src) ->
+					blocks = []
+
+					hash = (text) ->
+						text = text.replace(/(^\n+|\n+$)/g,"")
+						return "\n\n~K" + (blocks.push(text)-1) + "K\n\n"
+
+					unhash = (src) ->
+						src.replace /\n\n~K([0-9]+)K\n\n/g, (whole,m1) ->
+							blocks[m1]
+
+					out = config.inline(src, hash)
+					out = unhash(out)  if blocks.length > 0
+					return out
+
+			# robotskirt options
+			opts = config.robotskirtOptions
+			for name of opts
+				if opts[name]
+					if name.indexOf('EXT_') is 0
+						extOpts = extOpts or []
+						extOpts.push(rs[name])
+					if name.indexOf('HTML_') is 0
+						htmlOpts = htmlOpts or []
+						htmlOpts.push(rs[name])
+
+			# create
+			@parser = new rs.Markdown(renderer, extOpts, htmlOpts)
+
+
 		# Render some content
 		render: (opts,next) ->
 			# Prepare
@@ -44,43 +88,7 @@ module.exports = (BasePlugin) ->
 
 			# Check our extensions
 			if inExtension in ['md','markdown'] and outExtension in [null,'html']
-				rs = require('robotskirt')  unless rs?
-
-				# Create Parser
-				unless @parser?
-					renderer = new rs.HtmlRenderer()
-
-					# highlight
-					renderer.blockcode = config.highlight  if config.highlight
-
-					# inline
-					if config.inline
-						renderer.normal_text = (src) ->
-							blocks = []
-							hash = (text) ->
-								text = text.replace(/(^\n+|\n+$)/g,"")
-								return "\n\n~K" + (blocks.push(text)-1) + "K\n\n"
-							unhash = (src) ->
-								src.replace /\n\n~K([0-9]+)K\n\n/g, (whole,m1) ->
-									blocks[m1]
-
-							out = config.inline(src, hash)
-							out = unhash(out)  if blocks.length > 0
-							out
-
-					# robotskirt options
-					opts = config.robotskirtOptions
-					for name of opts
-						if opts[name]
-							if name.indexOf('EXT_') is 0
-								extOpts = extOpts or []
-								extOpts.push(rs[name])
-							if name.indexOf('HTML_') is 0
-								htmlOpts = htmlOpts or []
-								htmlOpts.push(rs[name])
-
-					# create
-					@parser = new rs.Markdown(renderer, extOpts, htmlOpts);
+				rs = require('robotskirt')
 
 				# Render
 				opts.content = @parser.render(opts.content)
