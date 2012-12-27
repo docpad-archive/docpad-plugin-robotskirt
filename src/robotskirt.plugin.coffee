@@ -26,7 +26,7 @@ module.exports = (BasePlugin) ->
 				HTML_EXPAND_TABS: false
 				HTML_SAFELINK: false
 				HTML_TOC: false
-				HTML_HARD_WRAP: false
+				HTML_HARD_WRAP: true
 				HTML_USE_XHTML: true
 				HTML_ESCAPE: false
 			smartypants: true
@@ -42,8 +42,19 @@ module.exports = (BasePlugin) ->
 			super
 			config = @config
 
+			# convert robotskirt options
+			opts = config.robotskirtOptions
+			for name of opts
+				if opts[name]
+					if name.indexOf('EXT_') is 0
+						extOpts = extOpts or []
+						extOpts.push(rs[name])
+					if name.indexOf('HTML_') is 0
+						htmlOpts = htmlOpts or []
+						htmlOpts.push(rs[name])
+
 			# Create Parser
-			renderer = new rs.HtmlRenderer()
+			renderer = new rs.HtmlRenderer(htmlOpts)
 
 			# highlight
 			renderer.blockcode = config.highlight  if config.highlight
@@ -65,20 +76,8 @@ module.exports = (BasePlugin) ->
 					out = unhash(out)  if blocks.length > 0
 					return out
 
-			# robotskirt options
-			opts = config.robotskirtOptions
-			for name of opts
-				if opts[name]
-					if name.indexOf('EXT_') is 0
-						extOpts = extOpts or []
-						extOpts.push(rs[name])
-					if name.indexOf('HTML_') is 0
-						htmlOpts = htmlOpts or []
-						htmlOpts.push(rs[name])
-
 			# create
-			@parser = new rs.Markdown(renderer, extOpts, htmlOpts)
-
+			@parser = new rs.Markdown(renderer, extOpts)
 
 		# Render some content
 		render: (opts,next) ->
