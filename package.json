@@ -28,8 +28,7 @@
     "url": "http://github.com/docpad/docpad-plugin-robotskirt.git"
   },
   "engines": {
-    "node": ">=0.4",
-    "docpad": "6.x"
+    "node": ">=0.4"
   },
   "dependencies": {
     "robotskirt": "~2.7.1"
