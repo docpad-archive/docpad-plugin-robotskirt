@@ -1,8 +1,4 @@
 # Robotskirt Plugin for DocPad
-[Markdown](http://daringfireball.net/projects/markdown/) rendering for [DocPad](https://docpad.org), using [Robotskirt](https://github.com/benmills/robotskirt)
-
-Convention:	`.html.md|markdown`
-
 
 <!-- BADGES/ -->
 
@@ -18,12 +14,9 @@ Convention:	`.html.md|markdown`
 
 <!-- /BADGES -->
 
+[Markdown](http://daringfireball.net/projects/markdown/) rendering for [DocPad](https://docpad.org), using [Robotskirt](https://github.com/benmills/robotskirt)
 
-<!-- DESCRIPTION/ -->
-
-Markdown rendering for DocPad, using Robotskirt (sundown)
-
-<!-- /DESCRIPTION -->
+Convention:	`.html.md|markdown`
 
 
 <!-- INSTALL/ -->
