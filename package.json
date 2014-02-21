@@ -44,18 +44,19 @@
   "engines": {
     "node": ">=0.4"
   },
+  "peerDependencies": {
+    "docpad": "6"
+  },
   "dependencies": {
     "robotskirt": "~2.7.1"
   },
   "devDependencies": {
-    "coffee-script": "~1.4.0",
+    "docpad": "6",
+    "coffee-script": "~1.7.1",
     "projectz": "~0.3.11"
   },
   "main": "./out/robotskirt.plugin.js",
   "scripts": {
     "test": "node ./out/robotskirt.test.js"
-  },
-  "peerDependencies": {
-    "docpad": "6"
   }
 }
