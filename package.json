@@ -53,10 +53,13 @@
   "devDependencies": {
     "docpad": "6",
     "coffee-script": "~1.7.1",
-    "projectz": "~0.3.11"
+    "projectz": "~0.3.13"
   },
   "main": "./out/robotskirt.plugin.js",
   "scripts": {
     "test": "node ./out/robotskirt.test.js"
+  },
+  "cakeConfiguration": {
+    "COFFEE_SRC_PATH": "src"
   }
 }
