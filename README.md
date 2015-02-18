@@ -20,6 +20,8 @@
 
 Convention:	`.html.md|markdown`
 
+> [Robotskirt is no longer supported.](https://github.com/benmills/robotskirt/issues/32#issuecomment-74920726)
+
 
 <!-- INSTALL/ -->
 
