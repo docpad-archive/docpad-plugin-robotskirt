@@ -15,6 +15,7 @@
 
 <!-- /BADGES -->
 
+NOTE! [Robotskirt has become deprecated](https://github.com/benmills/robotskirt/issues/32#issuecomment-74920726) and replaced by [hoedown](https://github.com/hoedown/node-hoedown). Please use one of DocPad's other markdown [renderer plugins](https://docpad.org/docs/plugins#renderers).
 
 [Markdown](http://daringfireball.net/projects/markdown/) rendering for [DocPad](https://docpad.org), using [Robotskirt](https://github.com/benmills/robotskirt)
 
